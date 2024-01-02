@@ -383,7 +383,7 @@ try {
                 agent
             });
             
-            ['open', 'close'].forEach(x => websocket.addEventListener(x, () => hasSpawned && console.log(--count)), { once: true });
+            ['error', 'close'].forEach(x => websocket.addEventListener(x, () => hasSpawned && console.log(--count)), { once: true });
             await new Promise(r => websocket.once('open', r));
             
             websocket.send(generateInitialiserPacket());
@@ -396,13 +396,15 @@ try {
             hasSpawned = true;
             count++;
             console.log(count);
-        } catch {}
+        }
+        catch {}
     };
     
     (async () => {
         for (let count = 0; count < BOT_COUNT; count++) {
-            await new Promise(r => setTimeout(r, 1000));
+            await new Promise(r => setTimeout(r, 100));
             for (let i = 0; i < 4; i++) createWebSocketInstance(agents[count]);
         }
     })();
-} catch {}
+}
+catch {}
