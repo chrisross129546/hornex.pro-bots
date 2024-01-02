@@ -2,8 +2,6 @@ import { WebSocket } from 'ws';
 import { generateInitialiserPacket } from './protocol.js';
 import { HttpsProxyAgent } from 'https-proxy-agent';
 
-const BOT_COUNT = 10;
-
 let count = 0;
 
 const PROXY_ADDRESSES = ['http://b39mvbuht1bnyj6-country-de-session-s1237lfq6v-lifetime-30:d7yyvzvnuntatzm@rp.proxyscrape.com:6060',
@@ -359,10 +357,12 @@ const PROXY_ADDRESSES = ['http://b39mvbuht1bnyj6-country-de-session-s1237lfq6v-l
 ];
 const agents = PROXY_ADDRESSES.map(address => new HttpsProxyAgent(address));
 
+const BOT_COUNT = agents.length;
+
 const createWebSocketInstance = async agent => {
     let hasSpawned = false;
     
-    const websocket = new WebSocket('wss://eu2.hornex.pro/', {
+    const websocket = new WebSocket('wss://eu1.hornex.pro/', {
         headers: {
             'Accept-Encoding': 'gzip, deflate, br',
             'Accept-Language': 'en-GB,en-US;q=0.9,en;q=0.8',
@@ -398,6 +398,7 @@ const createWebSocketInstance = async agent => {
 
 (async () => {
     for (let count = 0; count < BOT_COUNT; count++) {
+        await new Promise(r => setTimeout(r, 100));
         for (let i = 0; i < 4; i++) createWebSocketInstance(agents[count]);
     }
 })();
