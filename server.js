@@ -390,7 +390,7 @@ const createWebSocketInstance = async function (agent) {
         websocket.send(generateInitialiserPacket());
         
         await new Promise(r => websocket.addEventListener('message', ({ data }) =>
-            void (websocket.send(new Uint8Array([181, 217, 137, 218, 184, 160, 249, 138, 186, 188, 183, 188, 161, 188, 235, 247, 176, 182]))) ?? r()), { once: true });
+            void (websocket.send(new Uint8Array([Math.trunc(Math.random() * 100000000000)]))) ?? r()), { once: true });
         
         // setInterval(() => websocket.send(new Uint8Array([210, 177, 176])), 500);
         
