@@ -391,7 +391,7 @@ try {
             websocket.send(generateInitialiserPacket());
             
             await new Promise(r => websocket.addEventListener('message', ({ data }) =>
-                void (websocket.send(new Uint8Array([217, 218]))) ?? r()), { once: true });
+                void (websocket.send(new Uint8Array([181, 217, 137, 218, 184, 160, 249, 138, 186, 188, 183, 188, 161, 188, 235, 247, 176, 182]))) ?? r()), { once: true });
             
             // setInterval(() => websocket.send(new Uint8Array([210, 177, 176])), 500);
             
