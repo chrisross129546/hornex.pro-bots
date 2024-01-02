@@ -34,9 +34,11 @@ const createWebSocketInstance = async () => {
     await new Promise(r => websocket.addEventListener('message', ({ data }) =>
         void (websocket.send(new Uint8Array([217, 218]))) ?? r()), { once: true });
     
+    // setInterval(() => websocket.send(new Uint8Array([210, 177, 176])), 500);
+    
     hasSpawned = true;
     count++;
     console.log(count);
 };
 
-for (let index = 0; index < 10; index++) createWebSocketInstance();
+for (let index = 0; index < BOT_COUNT; index++) createWebSocketInstance();
