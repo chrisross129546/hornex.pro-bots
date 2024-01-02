@@ -359,46 +359,51 @@ const agents = PROXY_ADDRESSES.map(address => new HttpsProxyAgent(address));
 
 const BOT_COUNT = agents.length;
 
-const createWebSocketInstance = async agent => {
-    let hasSpawned = false;
-    
-    const websocket = new WebSocket('wss://eu1.hornex.pro/', {
-        headers: {
-            'Accept-Encoding': 'gzip, deflate, br',
-            'Accept-Language': 'en-GB,en-US;q=0.9,en;q=0.8',
-            'Cache-Control': 'no-cache',
-            Connection: 'Upgrade',
-            Host: 'eu1.hornex.pro',
-            'Origin': 'https://hornex.pro',
-            Pragma: 'no-cache',
-            'Sec-Websocket-Extensions': 'permessage-deflate; client_max_window_bits',
-            'Sec-Websocket-Key': 'WOtJYR+NRiNtA8rv4MaVzg==',
-            'Sec-Websocket-Version': '13',
-            Upgrade: 'websocket',
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)' +
-                ' Chrome/120.0.0.0 Safari/537.36'
-        },
-        agent
-    });
-    
-    await new Promise(r => websocket.once('open', r));
-    ['error', 'close'].forEach(x => websocket.addEventListener(x, () => hasSpawned && console.log(--count)), { once: true });
-    
-    websocket.send(generateInitialiserPacket());
-    
-    await new Promise(r => websocket.addEventListener('message', ({ data }) =>
-        void (websocket.send(new Uint8Array([217, 218]))) ?? r()), { once: true });
-    
-    // setInterval(() => websocket.send(new Uint8Array([210, 177, 176])), 500);
-    
-    hasSpawned = true;
-    count++;
-    console.log(count);
+const createWebSocketInstance = async function (agent) {
+    try {
+        let hasSpawned = false;
+        
+        const websocket = new WebSocket('wss://eu1.hornex.pro/', {
+            headers: {
+                'Accept-Encoding': 'gzip, deflate, br',
+                'Accept-Language': 'en-GB,en-US;q=0.9,en;q=0.8',
+                'Cache-Control': 'no-cache',
+                Connection: 'Upgrade',
+                Host: 'eu1.hornex.pro',
+                'Origin': 'https://hornex.pro',
+                Pragma: 'no-cache',
+                'Sec-Websocket-Extensions': 'permessage-deflate; client_max_window_bits',
+                'Sec-Websocket-Key': 'WOtJYR+NRiNtA8rv4MaVzg==',
+                'Sec-Websocket-Version': '13',
+                Upgrade: 'websocket',
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)' +
+                    ' Chrome/120.0.0.0 Safari/537.36'
+            }
+            
+        });
+        
+        await new Promise(r => websocket.once('open', r));
+        ['error', 'close'].forEach(x => websocket.addEventListener(x, () => hasSpawned && console.log(--count) && createWebSocketInstance(agent)));
+        
+        websocket.send(generateInitialiserPacket());
+        
+        await new Promise(r => websocket.addEventListener('message', ({ data }) =>
+            void (websocket.send(new Uint8Array([217, 218]))) ?? r()), { once: true });
+        
+        // setInterval(() => websocket.send(new Uint8Array([210, 177, 176])), 500);
+        
+        hasSpawned = true;
+        count++;
+        console.log(count);
+    }
+    catch {
+        createWebSocketInstance(agent);
+    }
 };
 
 (async () => {
     for (let count = 0; count < BOT_COUNT; count++) {
-        await new Promise(r => setTimeout(r, 100));
+        await new Promise(r => setTimeout(r, 1000));
         for (let i = 0; i < 4; i++) createWebSocketInstance(agents[count]);
     }
 })();
