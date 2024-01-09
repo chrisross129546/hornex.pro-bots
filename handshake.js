@@ -73,3 +73,13 @@ function _0x202b5b(_0x12df7d) {
         _0x34b877.send(_0x12df7d);
     }
 }
+
+_0x1a3851.onmousemove = _0x5b9f62.onmousemove = function (_0xb40a77) {
+    const width = _0xb40a77.clientX - document.documentElement.clientWidth / 0x2;
+    const height = _0xb40a77.clientY - document.documentElement.clientHeight / 0x2;
+    if (!_0x2b7e2e.enable_kb_movement && _0x3b41a3 && !_0x5072a9) {
+        const hypot = Math.hypot(width, height);
+        const atan = Math.atan2(height, width);
+        _0x3d0cb1(atan, hypot < 50 ? hypot / 100 : 1);
+    }
+};

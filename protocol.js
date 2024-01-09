@@ -1,6 +1,6 @@
 const getRandomIdentifier = () => crypto.randomUUID();
 
-let publicIdentifier = 0;
+export let publicIdentifier = 0;
 export const generateInitialiserPacket = () => {
     const identifier = getRandomIdentifier();
     const { length } = identifier;

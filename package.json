@@ -2,6 +2,7 @@
   "type": "module",
   "dependencies": {
     "https-proxy-agent": "^7.0.2",
+    "unique-username-generator": "^1.2.0",
     "ws": "^8.16.0"
   }
 }
